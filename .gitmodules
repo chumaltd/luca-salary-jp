@@ -1,0 +1,6 @@
+[submodule "core"]
+	path = core
+	url = git@github.com:chumaltd/luca-salary.git
+[submodule "jp-national-tax"]
+	path = jp-national-tax
+	url = git@github.com:chumaltd/jp-national-tax.git
