@@ -1,6 +1,7 @@
+require "luca/salary/jp/version"
 require "date"
 require "luca/salary"
-require_relative "insurance_jp"
+require "luca/salary/jp/insurance"
 require_relative "jp-national-tax/income_tax"
 
 class SalaryJP < Salary
