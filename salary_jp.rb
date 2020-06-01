@@ -1,5 +1,5 @@
 require "date"
-require_relative "core/salary"
+require "luca/salary"
 require_relative "insurance_jp"
 require_relative "jp-national-tax/income_tax"
 
@@ -8,6 +8,11 @@ class SalaryJP < Salary
   def initialize(area=nil, date=nil)
     super(date)
     @insurance = InsuranceJP.new(area, date)
+  end
+
+  # need for local dictionary loading
+  def self.country_path
+    __dir__
   end
 
   def payment_record(profile)
@@ -21,7 +26,7 @@ class SalaryJP < Salary
       select_code(profile, 3).each {|k,v| h[k] = v}
       select_code(profile, 4).each {|k,v| h[k] = v}
       h.merge!(amount_by_code(h))
-      h["payment"] = h["100"] - h["200"] - h["300"] + h["400"]
+      h["500"] = h["100"] - h["200"] - h["300"] + h["400"]
       h["id"] = profile.dig("id")
     end
   end
