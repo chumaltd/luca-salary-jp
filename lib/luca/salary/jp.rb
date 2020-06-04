@@ -38,16 +38,16 @@ class SalaryJP < Salary
   end
 
   def insurance_rank(dat)
-    take_active_setting(dat, "insurance", "rank")
+    take_active(dat, "insurance", "rank")
   end
 
   def pension_rank(dat)
-    take_active_setting(dat, "pension", "rank")
+    take_active(dat, "pension", "rank")
   end
 
-  # todo: use June settings
   def resident_tax(dat)
-    take_active_setting(dat, "resident", "ordinal")
+    attr = @date.month == 6 ? "extra" : "ordinal"
+    take_active(dat, "resident", attr)
   end
 
 end
