@@ -6,17 +6,16 @@ require "pathname"
 class InsuranceJP
   attr_reader :table
 
-  DATA_DIR = File.expand_path("../dict/", __dir__)
-
   # load config
-  def initialize(area=nil, date=nil)
+  def initialize(dir_path, area=nil, date=nil)
+    @pjdir = Pathname(dir_path) + "dict"
     @area = area
     @date = date
-    @table = load_table(area, date)
+    @table = load_table
   end
 
-  def load_table(area, date)
-    file_name = Pathname(DATA_DIR) + select_active_filename
+  def load_table
+    file_name = @pjdir + select_active_filename
     JSON.parse(File.read(file_name.to_s))
   end
 
@@ -44,11 +43,11 @@ class InsuranceJP
 
   # todo: need selection logic
   def select_active_filename
-    list = self.class.load_json
+    list = load_json
     list.first[1]
   end
 
-  def self.load_json
+  def load_json
     table_list = [].tap do |a|
       open_tables do |f, name|
         data = JSON.parse(f.read)
@@ -57,8 +56,8 @@ class InsuranceJP
     end
   end
 
-  def self.open_tables
-    Dir.chdir(DATA_DIR) do
+  def open_tables
+    Dir.chdir(@pjdir.to_s) do
       Dir.glob("*.json").each do |file_name|
         File.open(file_name, 'r') {|f| yield(f, file_name)}
       end

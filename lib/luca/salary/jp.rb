@@ -6,9 +6,10 @@ require_relative "jp-national-tax/income_tax"
 
 class SalaryJP < Salary
 
-  def initialize(area=nil, date=nil)
-    super(date)
-    @insurance = InsuranceJP.new(area, date)
+  def initialize(dir_path, config=nil, date=nil)
+    @pjdir = dir_path
+    @date = date
+    @insurance = InsuranceJP.new(@pjdir, config.dig("jp", "area"), date)
   end
 
   # need for local dictionary loading
@@ -16,7 +17,7 @@ class SalaryJP < Salary
     __dir__
   end
 
-  def payment_record(profile)
+  def calc_payment(profile)
     {}.tap do |h|
       select_code(profile, 1).each {|k,v| h[k] = v}
       h["201"] = @insurance.health_insurance_salary(insurance_rank(profile))
