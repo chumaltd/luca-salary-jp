@@ -1,3 +1,0 @@
-[submodule "lib/luca/salary/jp-national-tax"]
-	path = lib/luca/salary/jp-national-tax
-	url = git@github.com:chumaltd/jp-national-tax.git
