@@ -4,7 +4,7 @@ require 'luca_salary'
 require 'luca_salary/jp/insurance'
 require 'jp_national_tax'
 
-class LucaSalaryJP < LucaSalary
+class LucaSalaryJP < LucaSalary::Base
   def initialize(dir_path, config = nil, date = nil)
     @pjdir = dir_path
     @date = date
