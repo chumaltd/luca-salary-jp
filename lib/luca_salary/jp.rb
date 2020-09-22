@@ -1,10 +1,10 @@
-require 'luca/salary/jp/version'
+require 'luca_salary/jp/version'
 require 'date'
-require 'luca/salary'
-require 'luca/salary/jp/insurance'
+require 'luca_salary'
+require 'luca_salary/jp/insurance'
 require 'jp_national_tax'
 
-class SalaryJP < Salary
+class LucaSalaryJP < LucaSalary
   def initialize(dir_path, config = nil, date = nil)
     @pjdir = dir_path
     @date = date
