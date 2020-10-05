@@ -37,15 +37,15 @@ class LucaSalaryJP < LucaSalary::Base
   end
 
   def insurance_rank(dat)
-    take_active(dat, 'insurance', 'rank')
+    dat.dig('insurance', 'rank')
   end
 
   def pension_rank(dat)
-    take_active(dat, 'pension', 'rank')
+    dat.dig('pension', 'rank')
   end
 
   def resident_tax(dat)
     attr = @date.month == 6 ? 'extra' : 'ordinal'
-    take_active(dat, 'resident', attr)
+    dat.dig('resident', attr)
   end
 end
