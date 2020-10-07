@@ -6,20 +6,19 @@ require 'luca_salary/jp/version'
 Gem::Specification.new do |spec|
   spec.name          = 'lucasalary-jp'
   spec.version       = LucaSalaryJp::VERSION
+  spec.license       = 'GPL'
   spec.authors       = ['Chuma Takahiro']
   spec.email         = ['co.chuma@gmail.com']
 
-  spec.summary       = %q{Salary calculation tool for Japan}
+  spec.required_ruby_version = '>= 2.6.0'
+
+  spec.summary       = %q{LucaSalary calculation molule for Japan}
   spec.description   = <<~DESC
-   Salary calculation tool for Japan
+   LucaSalary calculation module for Japan
   DESC
   spec.homepage      = 'https://github.com/chumaltd/luca-salary-jp'
 
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
   if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = 'TODO: Set to "http://mygemserver.com"'
-
     spec.metadata['homepage_uri'] = spec.homepage
     spec.metadata['source_code_uri'] = 'https://github.com/chumaltd/luca-salary-jp'
     spec.metadata['changelog_uri'] = 'https://github.com/chumaltd/luca-salary-jp/CHANGELOG.md'
@@ -30,12 +29,10 @@ Gem::Specification.new do |spec|
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
-  spec.files         = Dir.chdir(File.expand_path('..', __FILE__)) do
-    `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  end
-  spec.bindir        = 'exe'
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.files         = Dir["LICENSE", "lib/**/{*,.[a-z]*}"]
   spec.require_paths = ['lib']
+
+  spec.add_dependency 'lucasalary'
 
   spec.add_development_dependency 'bundler', '~> 1.17'
   spec.add_development_dependency 'rake', '~> 12.3.3'
