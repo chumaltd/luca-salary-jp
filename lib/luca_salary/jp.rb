@@ -31,88 +31,20 @@ class LucaSalary::Jp < LucaSalary::Base
     end
   end
 
-  def self.year_total(payment)
+  def self.year_total(payment, date)
     payment.tap do |p|
-      p['911'] = basic_deduction(p['1'])
+      p['911'] = JpNationalTax::IncomeTax.basic_deduction(p['1'], date)
       p['916'] = partner_deduction(p['1'])
       p['912'] = (p['201'] || 0) + (p['202'] || 0)
-      p['901'] = year_salary(p['1'])
+      p['901'] = JpNationalTax::IncomeTax.year_salary_taxable(p['1'], date)
       p['941'] = p['901'] - p['911'] - p['912'] - p['916']
-      p['961'] = year_tax(p['941'])
+      p['961'] = JpNationalTax::IncomeTax.year_tax(p['941'], date)
       diff = p['961'] - p['203']
       if diff.positive?
         p['3A1'] = diff
       else
         p['4A1'] = diff * -1
       end
-    end
-  end
-
-  def self.year_salary(income)
-    rounded = if income < 1_619_000
-                income
-              elsif income < 1_620_000
-                income - ((income - 1_619_000) % 1_000)
-              elsif income < 1_624_000
-                income - ((income - 1_620_000) % 2_000)
-              elsif income < 1_624_000
-                income - ((income - 1_624_000) % 4_000)
-              else
-                income
-              end
-    if rounded < 551_000
-      0
-    elsif rounded < 1_619_000
-      rounded - 550_000
-    elsif rounded < 1_620_000
-      rounded * 0.6 + 97_600
-    elsif rounded < 1_622_000
-      rounded * 0.6 + 98_000
-    elsif rounded < 1_624_000
-      rounded * 0.6 + 98_800
-    elsif rounded < 1_628_000
-      rounded * 0.6 + 99_600
-    elsif rounded < 1_800_000
-      rounded * 0.6 + 100_000
-    elsif rounded < 3_600_000
-      rounded * 0.7 - 80_000
-    elsif rounded < 6_600_000
-      rounded * 0.8 - 440_000
-    elsif rounded < 8_500_000
-      rounded * 0.9 - 1_100_000
-    else
-      rounded - 1_950_000
-    end
-  end
-
-  def self.year_tax(income)
-    tax = if income < 1_950_000
-            income * 0.05
-          elsif income <= 3_300_000
-            income * 0.1 - 97_500
-          elsif income <= 6_950_000
-            income * 0.2 - 427_500
-          elsif income <= 9_000_000
-            income * 0.23 - 636_000
-          elsif income <= 18_000_000
-            income * 0.33 - 1_536_000
-          elsif income <= 18_050_000
-            income * 0.4 - 2_796_000
-          else
-            raise "no target"
-          end
-    (tax / 1000).floor * 1000
-  end
-
-  def self.basic_deduction(income)
-    if income <= 24_000_000
-      480_000
-    elsif income <= 24_500_000
-      320_000
-    elsif income <= 25_000_000
-      160_000
-    else
-      0
     end
   end
 
